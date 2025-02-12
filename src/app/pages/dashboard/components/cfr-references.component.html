@@ -1,0 +1,32 @@
+<div class="card !mb-8">
+    <div class="font-semibold text-xl mb-4">CFR References</div>
+    @if (selectedAgency()?.cfr_references?.length) {
+        <p-table [value]="selectedAgency()?.cfr_references!" [paginator]="true" [alwaysShowPaginator]="false" [rows]="5" responsiveLayout="scroll">
+            <ng-template #header>
+                <tr>
+                    <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
+                    <th pSortableColumn="chapter">Chapter <p-sortIcon field="chapter"></p-sortIcon></th>
+                    <th>View</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-reference>
+                <tr>
+                    <td style="width: 35%; min-width: 7rem;">{{ reference.title }}</td>
+                    <td style="width: 35%; min-width: 8rem;">{{ reference.chapter }}</td>
+                    <td style="width: 15%;">
+                        <button (click)="open(reference)" pButton pRipple type="button" icon="pi pi-search" class="p-button p-component p-button-text p-button-icon-only"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    }
+</div>
+
+<p-dialog header="Title {{selectedChapter()?.title}}, Chapter {{selectedChapter()?.name}}" [visible]="displayDialog()" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '60vw' }" [modal]="true">
+    <p class="leading-normal m-0">
+        {{selectedChapter()?.content}}
+    </p>
+    <ng-template #footer>
+        <p-button label="Close" (click)="close()" />
+    </ng-template>
+</p-dialog>

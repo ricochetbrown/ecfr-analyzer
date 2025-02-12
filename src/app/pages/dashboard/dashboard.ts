@@ -1,25 +1,57 @@
-import { Component } from '@angular/core';
-import { NotificationsWidget } from './components/notificationswidget';
-import { StatsWidget } from './components/statswidget';
-import { RecentSalesWidget } from './components/recentsaleswidget';
-import { BestSellingWidget } from './components/bestsellingwidget';
-import { RevenueStreamWidget } from './components/revenuestreamwidget';
+import {Component, computed, effect, inject, Signal} from '@angular/core';
+import {CorrectionsComponent} from './components/corrections.component';
+import { VisualizationComponent } from './components/visualization.component';
+import { CfrReferencesComponent } from './components/cfr-references.component';
+import {Agency} from "../../models/agency";
+import {EcfrStore} from "../../stores/ecfr.store";
+import {SearchResultsComponent} from "./components/search-results.component";
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
+import {FormsModule} from "@angular/forms";
+import {Fluid} from "primeng/fluid";
 
 @Component({
     selector: 'app-dashboard',
-    imports: [StatsWidget, RecentSalesWidget, BestSellingWidget, RevenueStreamWidget, NotificationsWidget],
-    template: `
-        <div class="grid grid-cols-12 gap-8">
-            <app-stats-widget class="contents" />
-            <div class="col-span-12 xl:col-span-6">
-                <app-recent-sales-widget />
-                <app-best-selling-widget />
-            </div>
-            <div class="col-span-12 xl:col-span-6">
-                <app-revenue-stream-widget />
-                <app-notifications-widget />
-            </div>
-        </div>
-    `
+    imports: [VisualizationComponent, CfrReferencesComponent, CorrectionsComponent, SearchResultsComponent, AutoCompleteModule, FormsModule, Fluid],
+    templateUrl: 'dashboard.component.html'
 })
-export class Dashboard {}
+export class Dashboard {
+    private readonly _ecfrStore = inject(EcfrStore);
+
+    agencies: Signal<Agency[]> = this._ecfrStore.agencies;
+    titles = this._ecfrStore.titles;
+    chapters = this._ecfrStore.chapters;
+    selectedAgency = this._ecfrStore.selectedAgency;
+
+    autoFilteredValue: any[] = [];
+
+    constructor() {
+        effect(() => {
+            this.autoFilteredValue = this.agencies();
+        });
+    }
+
+    filterAgency(event: AutoCompleteCompleteEvent) {
+        const filtered: any[] = [];
+        const query = event.query;
+
+        for (let i = 0; i < this.agencies().length; i++) {
+            const agency = this.agencies()[i];
+            if (agency.display_name.toLowerCase().includes(query.toLowerCase())) {
+                filtered.push(agency);
+            }
+        }
+
+        this.autoFilteredValue = filtered;
+    }
+
+    setSelectedAgency($event: Agency) {
+        this._ecfrStore.setSelectedAgency($event);
+
+        $event?.cfr_references.forEach((r) => {
+            if (!this.chapters().find((x) => x.name === r.chapter && x.title === r.title)) {
+                this._ecfrStore.getXml(this.titles().find((t) => t.number === r.title)!.latest_issue_date, r.title, r.chapter);
+                this._ecfrStore.getCorrectionsForTitle(r.title);
+            }
+        });
+    }
+}

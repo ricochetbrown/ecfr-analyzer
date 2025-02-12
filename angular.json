@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "sakai-ng": {
+        "ecrf-analyzer": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -17,7 +17,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:application",
                     "options": {
-                        "outputPath": "dist/sakai-ng",
+                        "outputPath": "dist/ecrf-analyzer",
                         "index": "src/index.html",
                         "browser": "src/main.ts",
                         "polyfills": [
@@ -64,10 +64,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "buildTarget": "sakai-ng:build:production"
+                            "buildTarget": "ecrf-analyzer:build:production"
                         },
                         "development": {
-                            "buildTarget": "sakai-ng:build:development"
+                            "buildTarget": "ecrf-analyzer:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -98,5 +98,8 @@
                 }
             }
         }
+    },
+    "cli": {
+      "analytics": "205c0836-74a7-4684-82a9-add95ce6cd36"
     }
 }

@@ -1,0 +1,76 @@
+<div class="col-span-12 lg:col-span-6 xl:col-span-3">
+    <div class="card mb-0">
+        <div class="flex justify-between mb-4">
+            <div>
+                <span class="block text-muted-color font-medium mb-4">Word Count</span>
+                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{ totalCfrWordCount() }}</div>
+            </div>
+            <div class="flex items-center justify-center bg-blue-100 dark:bg-blue-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-book text-blue-500 !text-xl"></i>
+            </div>
+        </div>
+        <span (click)="open()" class="text-primary font-medium cursor-pointer">View </span>
+        <p-dialog header="All Text for {{selectedAgency()?.short_name}}" [visible]="displayDialog()" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '60vw' }" [modal]="true">
+            <p class="leading-normal m-0">
+                {{totalCfrAllWordsTogether()}}
+            </p>
+            <ng-template #footer>
+                <p-button label="Close" (click)="close()" />
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>
+<div class="col-span-12 lg:col-span-6 xl:col-span-3">
+    <div class="card mb-0">
+        <div class="flex justify-between mb-4">
+            <div>
+                <span class="block text-muted-color font-medium mb-4">Last Results Count</span>
+                @if (dailySearchResultsForAgency()?.length) {
+                    <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{ mostRecentDailySearchResult()?.count }}</div>
+                } @else {
+                    <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">0</div>
+                }
+            </div>
+            <div class="flex items-center justify-center bg-orange-100 dark:bg-orange-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-search text-orange-500 !text-xl"></i>
+            </div>
+        </div>
+        <span class="text-primary font-medium">{{mostRecentDailySearchResult()?.date}} </span>
+        <span class="text-muted-color">last modified date</span>
+    </div>
+</div>
+<div class="col-span-12 lg:col-span-6 xl:col-span-3">
+    <div class="card mb-0">
+        <div class="flex justify-between mb-4">
+            <div>
+                <span class="block text-muted-color font-medium mb-4">Corrections to CFR References</span>
+                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{ totalCorrections() }}</div>
+            </div>
+            <div class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-check-square text-cyan-500 !text-xl"></i>
+            </div>
+        </div>
+        @if (totalCorrections() || 0 > 0) {
+            <span class="text-primary font-medium">{{ lastCorrectionDate() }} </span>
+            <span class="text-muted-color">last correction date</span>
+        } @else {
+            <span class="text-primary font-medium">N/A </span>
+            <span class="text-muted-color">last correction date</span>
+        }
+    </div>
+</div>
+<div class="col-span-12 lg:col-span-6 xl:col-span-3">
+    <div class="card mb-0">
+        <div class="flex justify-between mb-4">
+            <div>
+                <span class="block text-muted-color font-medium mb-4">Most Referenced Title</span>
+                <div class="text-surface-900 dark:text-surface-0 font-medium text-xl">{{ mostReferencedTitleSearchResult()?.title }}</div>
+            </div>
+            <div class="flex items-center justify-center bg-purple-100 dark:bg-purple-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
+                <i class="pi pi-comment text-purple-500 !text-xl"></i>
+            </div>
+        </div>
+        <span class="text-primary font-medium">{{ mostReferencedTitleSearchResult()?.count ?? 0 }} </span>
+        <span class="text-muted-color">references</span>
+    </div>
+</div>

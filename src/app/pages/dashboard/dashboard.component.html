@@ -1,0 +1,24 @@
+<div class="underline text-center mb-5 w-full flex justify-center">
+    @if (agencies()?.length) {
+        <div class="w-1/2 flex justify-center">
+            <p-fluid>
+                <p-autocomplete [ngModel]="selectedAgency()" (ngModelChange)="setSelectedAgency($event)" [suggestions]="autoFilteredValue"
+                                optionLabel="name" placeholder="Search" dropdown display="chip"
+                                class="w-full text-center"
+                                (completeMethod)="filterAgency($event)" />
+            </p-fluid>
+        </div>
+    }
+</div>
+<div class="grid grid-cols-12 gap-8">
+    <app-visualization class="contents" />
+    <div class="col-span-12">
+        <app-search-results />
+    </div>
+    <div class="col-span-12 xl:col-span-6">
+        <app-cfr-references />
+    </div>
+    <div class="col-span-12 xl:col-span-6">
+        <app-corrections />
+    </div>
+</div>

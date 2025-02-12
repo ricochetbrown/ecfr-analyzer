@@ -1,0 +1,48 @@
+<div class="card !mb-8">
+    <p-accordion value="0">
+        <p-accordion-panel value="0">
+            <p-accordion-header>Search eCFR</p-accordion-header>
+            <p-accordion-content>
+                <p-inputgroup>
+                    <p-button (click)="searchCfr()" label="Search" />
+                    <input [ngModel]="query()" (ngModelChange)="query.set($event)" pInputText placeholder="Keyword" />
+                </p-inputgroup>
+                <br>
+
+                @if (selectedAgency()?.cfr_references?.length && querySearchResults()) {
+                    <p-table [value]="querySearchResults().results" [paginator]="true" [alwaysShowPaginator]="false" [rows]="5" responsiveLayout="scroll">
+                        <ng-template #header>
+                            <tr>
+                                <th pSortableColumn="type">Type <p-sortIcon field="type"></p-sortIcon></th>
+                                <th>Hierarchy</th>
+                                <th>Title</th>
+                                <th>Chapter</th>
+                                <th>Part</th>
+                                <th>Section</th>
+                                <th>Full Text Excerpt</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template #body let-result>
+                            <tr>
+                                <td style="width: 10%; min-width: 3rem;">{{ result.type }}</td>
+                                <td style="width: 10%; min-width: 3rem;">
+                                    Title {{ result.hierarchy.title }}<br>Chapter {{result.hierarchy.chapter ?? 'N/A'}}<br>Part {{result.hierarchy.part ?? 'N/A'}}
+                                </td>
+                                <td style="width: 15%; min-width: 7rem;" [innerHTML]="result.headings.title | safeHtml">
+                                </td>
+                                <td style="width: 15%; min-width: 7rem;" [innerHTML]="result.headings.chapter | safeHtml">
+                                </td>
+                                <td style="width: 20%; min-width: 7rem;" [innerHTML]="result.headings.part | safeHtml">
+                                </td>
+                                <td style="width: 15%; min-width: 7rem;" [innerHTML]="result.headings.section | safeHtml">
+                                </td>
+                                <td style="width: 35%; min-width: 42rem;" [innerHTML]="result.full_text_excerpt | safeHtml">
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                }
+            </p-accordion-content>
+        </p-accordion-panel>
+    </p-accordion>
+</div>
