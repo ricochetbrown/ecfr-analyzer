@@ -5,6 +5,7 @@
     "start:server": "node server.ts",
     "start:client": "ng serve --proxy-config proxy.conf.json",
     "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+      "heroku-start": "npm run serve:ssr",
     "serve:ssr": "node dist/ecrf-analyzer/server/server.mjs"
   },
   "main": "server.ts",
