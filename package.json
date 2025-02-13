@@ -7,6 +7,7 @@
     "start-dev": "concurrently \"npm run start:server\" \"npm run start:client\"",
       "start": "npm run serve:ssr",
       "heroku-start": "npm run serve:ssr",
+      "build": "ng build",
     "serve:ssr": "node dist/ecrf-analyzer/server/server.mjs"
   },
   "main": "server.ts",
