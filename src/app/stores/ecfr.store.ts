@@ -159,9 +159,6 @@ export const EcfrStore = signalStore(
             const agencies = await firstValueFrom(_http.get('api/agencies'));
             patchState(state, { agencies: (agencies as any).agencies });
 
-            patchState(state, { selectedAgency: state.agencies()[1] });
-            patchState(state, { selectedAgency: state.agencies()[0] });
-
             const titles = await firstValueFrom(_http.get('api/titles'));
             patchState(state, { titles: (titles as any).titles });
         }

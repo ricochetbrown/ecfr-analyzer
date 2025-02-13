@@ -10,15 +10,18 @@
         </div>
     }
 </div>
-<div class="grid grid-cols-12 gap-8">
-    <app-visualization class="contents" />
-    <div class="col-span-12">
-        <app-search-results />
+
+@if (selectedAgency()) {
+    <div class="grid grid-cols-12 gap-8">
+        <app-visualization class="contents" />
+        <div class="col-span-12">
+            <app-search-results />
+        </div>
+        <div class="col-span-12 xl:col-span-6">
+            <app-cfr-references />
+        </div>
+        <div class="col-span-12 xl:col-span-6">
+            <app-corrections />
+        </div>
     </div>
-    <div class="col-span-12 xl:col-span-6">
-        <app-cfr-references />
-    </div>
-    <div class="col-span-12 xl:col-span-6">
-        <app-corrections />
-    </div>
-</div>
+}
